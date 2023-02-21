@@ -50,7 +50,7 @@ WHERE NAME { = "mv_name" | LIKE "mv_name_matcher"}
 
 以下示例基于当前业务情景：
 
-```
+```Plain
 -- Create Table: customer
 CREATE TABLE customer ( C_CUSTKEY     INTEGER NOT NULL,
                         C_NAME        VARCHAR(25) NOT NULL,
@@ -101,7 +101,6 @@ refresh materialized view customer_mv;
 ```
 
 示例一：通过精确匹配查看特定物化视图
-
 
 ```Plain
 mysql> show materialized view  where name='customer_mv'\G;
