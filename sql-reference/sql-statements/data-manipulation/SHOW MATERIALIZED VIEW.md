@@ -4,14 +4,17 @@
 
 展示所有或指定物化视图信息。
 
+> **注意**
+>
+> 该命令当前仅针对异步物化视图生效。针对单表同步物化视图您可以通过 [SHOW ALTER MATERIALIZED VIEW](../data-manipulation/SHOW%20ALTER%20MATERIALIZED%20VIEW.md) 命令查看当前数据库中单表物化视图的构建状态。
+
 ## 语法
 
 ```SQL
 SHOW MATERIALIZED VIEW
 [FROM db_name]
 [
-WHERE
-[NAME { = "mv_name" | LIKE "mv_name_matcher"}
+WHERE NAME { = "mv_name" | LIKE "mv_name_matcher"}
 ]
 ```
 
@@ -24,28 +27,28 @@ WHERE
 | mv_name_matcher | 否       | 用于模糊匹配的物化视图名称 matcher。                         |
 
 ## 返回
-- 返回最近一次refresh任务的状态。
 
-> 注意：该命令当前主要是针对异步物化视图生效，针对单表同步物化视图您可以通过 [SHOW ALTER MATERIALIZED VIEW](../sql-reference/sql-statements/data-manipulation/SHOW%20ALTER%20MATERIALIZED%20VIEW.md) 命令查看当前数据库中单表物化视图的构建状态。
-
+返回最近一次 REFRESH 任务的状态。
 
 | **返回**                   | **说明**                                                    |
 | -------------------------- | --------------------------------------------------------- |
 | id                         | 物化视图 ID。                                               |
 | name                       | 物化视图名称。                                              |
 | database_name              | 物化视图所属的数据库名称。                                    |
-| refresh_type	             | 物化视图的更新方式：ROLLUP/MANNUL/ASYNC/INCREMENTAL。        |
-| is_active	                 | 物化视图是否active。                                       |
-| last_refresh_start_time	   | 物化视图上一次Refresh开始时间。                              |
-| last_refresh_finished_time |	物化视图上一次Refresh结束时间。                             |
-| last_refresh_duration	     | 物化视图上一次Refresh耗时（单位秒）。                          |
-| last_refresh_state         | 物化视图上一次Refresh的状态（PENDING/RUNNING/FAILED/SUCCESS）。 |
-| inactive_code	             | 物化视图上一次Refresh失败的ErrorCode（如果inactive的话）。       |
-| inactive_reason	           | 物化视图上一次Refresh失败的ErrorMessage（如果inactive的话）。 |
+| refresh_type               | 物化视图的更新方式，包括 ROLLUP、MANNUL、ASYNC、INCREMENTAL。        |
+| is_active                  | 物化视图状态是否为 active。                                       |
+| last_refresh_start_time    | 物化视图上一次刷新开始时间。                              |
+| last_refresh_finished_time | 物化视图上一次刷新结束时间。                             |
+| last_refresh_duration      | 物化视图上一次刷新耗时（单位秒）。                          |
+| last_refresh_state         | 物化视图上一次刷新的状态，包括 PENDING、RUNNING、FAILED、SUCCESS。 |
+| inactive_code              | 物化视图上一次刷新失败的 ErrorCode（如果物化视图状态不为 active）。       |
+| inactive_reason            | 物化视图上一次刷新失败的ErrorMessage（如果物化视图状态不为 active）。 |
 | text                       | 创建物化视图的查询语句。                                     |
 | rows                       | 物化视图中数据行数。                                         |
 
 ## 示例
+
+以下示例基于当前业务情景：
 
 ```
 -- Create Table: customer
@@ -97,7 +100,7 @@ as select
 refresh materialized view customer_mv;
 ```
 
-### 示例一：通过精确匹配查看特定物化视图
+示例一：通过精确匹配查看特定物化视图
 
 
 ```Plain
@@ -129,7 +132,8 @@ GROUP BY `customer`.`c_custkey`, `customer`.`c_phone`, `customer`.`c_acctbal`;
 1 row in set (0.11 sec)
 ```
 
-### 示例二：通过模糊匹配查看物化视图
+示例二：通过模糊匹配查看物化视图
+
 ```Plain
 mysql> show materialized view  where name like 'customer_mv'\G;
 *************************** 1. row ***************************
