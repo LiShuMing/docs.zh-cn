@@ -6,9 +6,9 @@ BINARY(M)
 
 VARBINARY(M)
 
-1. 自 3.0 版本起，StarRocks 支持 BINARY/VARBINARY, 最大支持长度同 VARCHAR 类型相同，`M` 的取值范围为 1~1048576。
-2. BINARY 只是 VARBINARY 的别名，用法同 VARBINARY 完全相同。
-3. BINARY(M)/VARBINARY(M) 不会对没有对齐的长度做补齐操作。
+- 自 3.0 版本起，StarRocks 支持 BINARY/VARBINARY, 最大支持长度同 VARCHAR 类型相同，`M` 的取值范围为 1~1048576。
+- BINARY 只是 VARBINARY 的别名，用法同 VARBINARY 完全相同。
+- BINARY(M)/VARBINARY(M) 不会对没有对齐的长度做补齐操作。
 
 ## 示例
 
@@ -52,7 +52,6 @@ INSERT INTO test_binary (id, j) VALUES (2, x'baba');
 INSERT INTO test_binary (id, j) VALUES (3, x'010102');
 INSERT INTO test_binary (id, j) VALUES (4, x'0000'); 
 ```
-
 
 - 方式二：通过 `TO_BINARY` 函数将 VARCHAR 类型数据转换为 BINARY 类型。
 
